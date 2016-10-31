@@ -14,7 +14,15 @@ import {
 } from 'react-native';
 
 import dva, { connect } from 'dva/mobile';
+import Socket from './src/services/websocket';
 import Button from 'antd-mobile/lib/button';
+import Home from './src/components/homepage';
+import Test from './src/components/test';
+import {
+    Scene,
+    Router,
+    Actions,
+} from 'react-native-router-flux';
 
 function delay(timeout) {
   return new Promise(resolve => {
@@ -29,12 +37,24 @@ app.model({
   state: {
     count:0,
     text:'not yet',
+    socket:null,
+    hassocket:'false',
   },
   reducers: {
     add(state) { return {...state,count:state.count+1} },
     settext(state,action)
     {
       return{...state,text:action.payload}
+    },
+    setsocket(state,action)
+    {
+      return{...state,socket:action.payload,hassocket:'true'}
+    },
+    newmessage(state)
+    {
+      Actions.pageTwo();
+      console.log('llllll');
+      return{...state}
     },
   },
   effects: {
@@ -50,79 +70,17 @@ app.model({
   },
 });
 
-const App = connect(({ count }) => ({ count }))((props) => {
-  const { dispatch, count } = props;
-  function handlesocket()
-  {
-    connected=false;
-    ws = new WebSocket('ws://10.138.73.83:8000');
-    ws.onopen = () => {
-      // connection opened
-      props.dispatch({
-        type: 'count/settext' ,
-        payload:'opened',
-      });
-      connected=true;
-      //ws.send('something'); // send a message
-    };
-
-    ws.onmessage = (e) => {
-      // a message was received
-      console.log(e.data);
-      props.dispatch({
-        type: 'count/settext' ,
-        payload:e.data,
-      });
-    };
-
-    ws.onerror = (e) => {
-      // an error occurred
-      console.log(e.message);
-      props.dispatch({
-        type: 'count/settext' ,
-        payload:'err',
-      });
-    };
-
-    ws.onclose = (e) => {
-      // connection closed
-      console.log(e.code, e.reason);
-      props.dispatch({
-        type: 'count/settext' ,
-        payload:'close',
-      });
-      connected=false;
-    };
-  }
-  function handleclick()
-  {
-    if(connected)
-    {
-      ws.send('something');
-      console.log('Ol');
-    }
-    props.dispatch({
-      type: 'count/settext' ,
-      payload:'clicked',
-    });
-  };
-  return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Count: { count.count }
-      </Text>
-      <TouchableHighlight onPress={() => { dispatch({ type: 'count/add' }) }}>
-        <Text>Add</Text>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={() => { dispatch({ type: 'count/addDelay' }) }}>
-        <Text>Delay Add</Text>
-      </TouchableHighlight>
-      <Button onClick={handleclick}>Start</Button>
-      <Button onClick={handlesocket}>Socket</Button>
-      <Text>{count.text}</Text>
-    </View>
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+        <Scene key="root">
+          <Scene key="pageOne" component={Home} title="PageOne" initial={true} />
+          <Scene key="pageTwo" component={Test} title="PageTwo" />
+        </Scene>
+      </Router>
   );
-});
+}}
 
 const styles = StyleSheet.create({
   container: {
