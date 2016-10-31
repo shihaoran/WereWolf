@@ -1,0 +1,18 @@
+{
+  "name": "DvaExampleReactNative",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "antd-mobile": "^0.9.4",
+    "dva": "1.1.0",
+    "react": "15.3.2",
+    "react-dom": "15.3.2",
+    "react-native": "0.36.0"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.0.1"
+  }
+}
