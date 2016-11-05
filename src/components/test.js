@@ -39,6 +39,7 @@ const Test = (props) => {
             <Button onClick={handleclick}>Send</Button>
             <Button onClick={Actions.pageOne}>Back</Button>
             <Button onClick={handleback}>Backonhanle</Button>
+            <Button onClick={Actions.userlist}>next</Button>
             <Text>{count.text}</Text>
             <Text>{count.hassocket}ok</Text>
         </View>

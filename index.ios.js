@@ -11,17 +11,24 @@ import {
   Text,
   View,
   TouchableHighlight,
+  StatusBar,
 } from 'react-native';
 
 import dva, { connect } from 'dva/mobile';
 import Socket from './src/services/websocket';
 import Button from 'antd-mobile/lib/button';
 import Home from './src/components/homepage';
+import Talk from './src/components/parallaxscroll';
 import Test from './src/components/test';
+import Test1 from './src/components/test1';
+import User from './src/components/userlist';
+import VoteResult from './src/components/stateless/voteresult';
+import GuessRole from './src/components/stateless/guessrole';
 import {
     Scene,
     Router,
     Actions,
+    TabBar,
 } from 'react-native-router-flux';
 
 function delay(timeout) {
@@ -73,12 +80,31 @@ app.model({
 export default class App extends Component {
   render() {
     return (
-      <Router>
-        <Scene key="root">
-          <Scene key="pageOne" component={Home} title="PageOne" initial={true} />
-          <Scene key="pageTwo" component={Test} title="PageTwo" />
-        </Scene>
-      </Router>
+      <View style={{ flex: 1 }}>
+        <StatusBar barStyle="light-content" />
+        <Router>
+          <Scene key="root" >
+            <Scene key="pageOne"
+                   component={Home}
+                   title="PageOne"
+                   navigationBarStyle={styles.navigationBarStyle}
+                   tabs={true}
+            />
+            <Scene key="pageTwo" component={Test} title="PageTwo" />
+            <Scene key="userlist" component={User}
+                   navigationBarStyle={styles.navigationBarStyleRed}
+                   title="狼人"/>
+            <Scene key="list" component={Talk}
+            hideNavBar={true}/>
+            <Scene key="test" component={Test1} initial={true}
+                   hideNavBar={true}/>
+            <Scene key="vote" component={VoteResult}
+                   hideNavBar={true}/>
+            <Scene key="role" component={GuessRole}
+                   hideNavBar={true}/>
+          </Scene>
+        </Router>
+      </View>
   );
 }}
 
@@ -88,6 +114,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  navigationBarStyle: {
+    backgroundColor: '#2e2e2e',
+    height: 100,
+  },
+  navigationBarStyleRed: {
+    backgroundColor: '#f2443e',
+    height: 60,
+    shadowColor:'#F5FCFF',
+    shadowOffset:{width: 15, height: 15},
   },
 });
 
