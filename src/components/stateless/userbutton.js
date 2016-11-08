@@ -100,12 +100,13 @@ const UserButton = (props) => {
     else if(vote&&vote>0)
     {
         return(
-            <Badge text={vote}>
+            <Badge text={vote}
+                   style={[styles.container,styleprop]}>
                 <TouchableOpacity
                     accessibilityTraits="button"
                     onPress={onPress}
                     activeOpacity={0.8}
-                    style={[styles.container,styleprop]}>
+                    >
                     {content}
                 </TouchableOpacity>
             </Badge>
@@ -128,6 +129,10 @@ const UserButton = (props) => {
 const HEIGHT = 70;
 const WIDTH= 60;
 const styles = StyleSheet.create({
+    container: {
+        height: HEIGHT,
+        width: WIDTH,
+    },
     containerundis: {
         height: HEIGHT,
         width: WIDTH,

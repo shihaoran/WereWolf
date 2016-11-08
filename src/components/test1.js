@@ -15,6 +15,7 @@ import {
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import UserGrid from './stateless/usergrid';
 import TabView from './tabview';
+import { connect } from 'dva/mobile';
 class Test1 extends Component {
     constructor(props) {
         super(props);
@@ -73,6 +74,7 @@ class Test1 extends Component {
                 },
             ],
         };
+        const { dispatch, room } = props;
     }
     render() {
         const { onScroll = () => {} } = this.props;
@@ -219,6 +221,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Test1;/**
+export default connect(room=>room)(Test1);/**
  * Created by shi on 2016/11/3.
  */

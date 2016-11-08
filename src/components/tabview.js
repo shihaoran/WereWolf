@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-import { Card, Button ,CheckBox} from 'react-native-elements'
+import { Card, Button ,List, ListItem} from 'react-native-elements'
 import FlipCard from 'react-native-flip-card'
 import {Actions} from 'react-native-router-flux';
 import Modal from 'antd-mobile/lib/modal';
@@ -75,7 +75,14 @@ var TabView = React.createClass({
             ],
             player_id:[
                 1,2,3,4,5,6,7,8,
-            ]
+            ],
+            msg:[],
+            msg1_1:'1号玩家',
+            msg1_2:'是',
+            msg1_3:'村民',
+            msg2_1:'1号玩家',
+            msg2_2:'抗推',
+
         };
     },
     showModal() {
@@ -91,14 +98,29 @@ var TabView = React.createClass({
     _renderPicker(list){
         return list.map((item, i) => {
             return (
-                <Picker.Item key={i} label={`${i+1}号玩家`} value={i}/>
+                <Picker.Item key={i} label={`${i+1}号玩家`} value={`${i+1}号玩家`}/>
             )
         });
+    },
+    _renderMsg(list){
+        return list.map((item, i) => {
+            return (
+                <ListItem
+                    key={i}
+                    roundAvatar
+                    avatar={{uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}
+                    title={item}
+                />
+            )
+        });
+    },
+    prepend(arr, item) {
+        return [item].concat(arr);
     },
     render() {
         return (
             <ScrollableTabView
-                style={{marginTop: 0, height:800,}}
+                style={{marginTop: 0, height:1000,}}
                 initialPage={0}
                 renderTabBar={() => <ScrollableTabBar />}
             >
@@ -176,9 +198,14 @@ var TabView = React.createClass({
                       }}
                 >
 
-                    <ScrollView>
-
-                    </ScrollView>
+                    <View style={{flex:1,flexDirection:'row',height: 200,alignItems:'center',marginTop:20,
+                        backgroundColor:'white'}}>
+                        <ScrollView style={{flex:1,marginBottom:20}}>
+                            <List>
+                                { this._renderMsg(this.state.msg) }
+                            </List>
+                        </ScrollView>
+                    </View>
                     <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
                         backgroundColor:'white'}}>
                         <View style={{flexDirection:'row',height: 200,alignItems:'center',marginTop:5,
@@ -213,6 +240,7 @@ var TabView = React.createClass({
                             title='发送'
                             backgroundColor='#2db7f5'
                             buttonStyle={{marginTop:15,width:150}}
+                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg1_1+this.state.msg1_2+this.state.msg1_3)})}
                         />
                     </View>
                     <View style={{flexDirection:'column',height: 300,alignItems:'center',marginTop:20,
@@ -246,6 +274,7 @@ var TabView = React.createClass({
                             title='发送'
                             backgroundColor='#fd661b'
                             buttonStyle={{marginTop:15,width:150}}
+                            onPress={()=>this.setState({msg:this.prepend(this.state.msg,this.state.msg2_1+this.state.msg2_2)})}
                         />
                     </View>
 
