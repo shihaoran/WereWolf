@@ -24,6 +24,7 @@ import Test1 from './src/components/test1';
 import User from './src/components/userlist';
 import VoteResult from './src/components/stateless/voteresult';
 import GuessRole from './src/components/stateless/guessrole';
+import room from './src/models/room';
 import {
     Scene,
     Router,
@@ -39,43 +40,47 @@ function delay(timeout) {
 
 const app = dva();
 
-app.model({
-  namespace: 'count',
-  state: {
-    count:0,
-    text:'not yet',
-    socket:null,
-    hassocket:'false',
-  },
-  reducers: {
-    add(state) { return {...state,count:state.count+1} },
-    settext(state,action)
+app.model(room);
+app.model(
     {
-      return{...state,text:action.payload}
-    },
-    setsocket(state,action)
-    {
-      return{...state,socket:action.payload,hassocket:'true'}
-    },
-    newmessage(state)
-    {
-      Actions.pageTwo();
-      console.log('llllll');
-      return{...state}
-    },
-  },
-  effects: {
-    *addDelay(action, { call, put }) {
-      yield call(delay, 1000);
-      yield put({ type: 'add' });
-    },
-  },
-  subscriptions: {
-    setup({ dispatch }) {
-      dispatch({type: 'add'});
-    },
-  },
-});
+      namespace: 'count',
+      state: {
+        count:0,
+        text:'not yet',
+        socket:null,
+        hassocket:'false',
+      },
+      reducers: {
+        add(state) { return {...state,count:state.count+1} },
+        settext(state,action)
+        {
+          return{...state,text:action.payload}
+        },
+        setsocket(state,action)
+        {
+          return{...state,socket:action.payload,hassocket:'true'}
+        },
+        newmessage(state)
+        {
+          Actions.pageTwo();
+          console.log('llllll');
+          return{...state}
+        },
+      },
+      effects: {
+        *addDelay(action, { call, put }) {
+          yield call(delay, 1000);
+          yield put({ type: 'add' });
+        },
+      },
+      subscriptions: {
+        setup({ dispatch }) {
+          dispatch({type: 'add'});
+        },
+      },
+    }
+);
+
 
 export default class App extends Component {
   render() {

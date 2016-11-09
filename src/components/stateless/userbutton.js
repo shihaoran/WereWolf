@@ -17,8 +17,9 @@ import {
 import { Badge } from 'antd-mobile';
 
 const UserButton = (props) => {
-    const { index,selected=false,vote,username,onPress,disabled,sheriff} = props.data;
+    const { index,selected=false,vote,username,onPress,disabled,sheriff,userid} = props.data;
     const styleprop=props.style;
+    const dispatch=props.dispatch;
     let content;
     let icon;
     if(sheriff===true)
